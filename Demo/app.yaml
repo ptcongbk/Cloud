@@ -1,4 +1,4 @@
-runtime: python
+runtime: python37
 api_version: 1
 threadsafe: true
 handlers:
@@ -6,5 +6,5 @@ handlers:
   static_dir: static
 - url: /.*
   script: main.app
-runtime_config:
-    python_version: 3.6
+# runtime_config:
+#     python_version: 3.6
