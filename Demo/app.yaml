@@ -1,16 +1,5 @@
 runtime: python37
-
-instance_class: F1
-
-env_variables:
-  BUCKET_NAME: "cryptocurrency1"
-
 handlers:
-# Matches requests to /images/... to files in static/images/...
-- url: /img
-  static_dir: static/img
-
 - url: /.*
   secure: always
-  redirect_http_response_code: 301
   script: auto
