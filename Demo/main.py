@@ -1,32 +1,77 @@
 #!/usr/bin/env python
-from pprint import pprint as pp
-from flask import Flask, flash, redirect, render_template, request, url_for
-from weather import query_api
+from flask import Flask, flash, redirect, render_template, request, url_for, Response
+from flask import jsonify
+import pymysql
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import random
+import io
+import base64
+
+
 app = Flask(__name__)
+
+### TO EDIT ###
+sql_host = '35.226.205.65' 
+sql_port = 3306
+sql_database = 'currencies'
+sql_user = 'root'
+sql_password = 'congphan'
+### END TO EDIT ###
+
+### SHARED SQL FUNCTIONS ###
+def sqlConnect():
+    global db
+    global cursor
+    db = pymysql.connect(host=sql_host, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
+    cursor = db.cursor()
+    return db
+def sqlClose():
+    db.close()
+    return
+### END SHARED SQL FUNCTIONS ###
+
+
+def create_figure():
+    sqlConnect()
+    sql = "SELECT Symbol, SUM(Volume) as Volume FROM currencies GROUP BY Symbol "
+    cursor.execute(sql)
+    results = list(cursor.fetchall())
+    sqlClose()
+    results.sort(key=lambda x: x[1], reverse=True)
+
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    bar_width = 0.35
+    opacity = 0.4
+    values =[]
+    curriencies = []
+    for item in results[:5]:
+        values.append(item[1])
+        curriencies.append(item[0])
+    axis.bar(curriencies, values, bar_width, alpha=opacity, color='b')
+    return fig
+
+@app.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+@app.route('/data.json')
+def getData():
+    sqlConnect()
+    sql = "SELECT * FROM currencies WHERE Symbol ='BTC'"
+    cursor.execute(sql)
+    results = list(cursor.fetchall())
+    sqlClose()
+    return jsonify(results)
+
 @app.route('/')
 def index():
-    return render_template(
-        'weather.html',
-        data=[ {'name':'Calgary'},
-        {'name':'Ottawa'}, {'name':'Edmonton'}, {'name':'Mississauga'},
-        {'name':'Winnipeg'}, {'name':'Vancouver'}, {'name':'Brampton'}, 
-        {'name':'Quebec'}])
+    return render_template('index.html')
         
-@app.route("/result" , methods=['GET', 'POST'])
-def result():
-    data = []
-    error = None
-    select = request.form.get('comp_select')
-    resp = query_api(select)
-    pp(resp)
-    if resp:
-       data.append(resp)
-    if len(data) != 2:
-        error = 'Bad Response from Weather API'
-    return render_template(
-        'result.html',
-        data=data,
-        error=error)
-
 if __name__=='__main__':
     app.run(debug=True)
