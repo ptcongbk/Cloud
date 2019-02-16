@@ -5,9 +5,17 @@ entrypoint: gunicorn -b :$PORT main:app
 runtime_config:
   python_version: 3
 
+#[START gae_flex_mysql_env]
 env_variables:
-  SQLALCHEMY_DATABASE_URI: >-
-    mysql+pymysql://root:griffith_cloud_learningassword@/currencies?unix_socket=/cloudsql/lexical-archery-231806:australia-southeast1:googlecloudsql
+    # Replace user, password, database, and instance connection name with the values obtained
+    # when configuring your Cloud SQL instance.
+    SQLALCHEMY_DATABASE_URI: >-
+      mysql+pymysql://root:griffith_cloud_learning@/currencies?unix_socket=/cloudsql/lexical-archery-231806:australia-southeast1:googlecloudsql
+#[END gae_flex_mysql_env]
 
+#[START gae_flex_mysql_settings]
+# Replace project and instance with the values obtained  when configuring your
+# Cloud SQL instance.
 beta_settings:
-  cloud_sql_instances: lexical-archery-231806:australia-southeast1:googlecloudsql
+    cloud_sql_instances: lexical-archery-231806:australia-southeast1:googlecloudsql
+#[END gae_flex_mysql_settings]
