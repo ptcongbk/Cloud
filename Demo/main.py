@@ -26,9 +26,9 @@ def sqlConnect():
     global db
     global cursor
     ##local
-    db = pymysql.connect(host=sql_host, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
+    #db = pymysql.connect(host=sql_host, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
     ##production
-    #db = pymysql.connect(unix_socket='/cloudsql/' +sql_connection_name, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
+    db = pymysql.connect(unix_socket='/cloudsql/' +sql_connection_name, database=sql_database, user=sql_user, password=sql_password) 
     cursor = db.cursor()
     return db
 def sqlClose():
