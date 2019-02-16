@@ -1,5 +1,2 @@
 runtime: python37
-handlers:
-- url: /.*
-  secure: always
-  script: auto
+entrypoint: gunicorn -b :$PORT main:app
