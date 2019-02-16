@@ -7,7 +7,7 @@ runtime_config:
 
 env_variables:
   SQLALCHEMY_DATABASE_URI: >-
-    mysql+pymysql://root:pgriffith_cloud_learningassword@/currencies?unix_socket=/cloudsql/lexical-archery-231806:australia-southeast1:googlecloudsql
+    mysql+pymysql://root:griffith_cloud_learningassword@/currencies?unix_socket=/cloudsql/lexical-archery-231806:australia-southeast1:googlecloudsql
 
 beta_settings:
-  cloud_sql_instances: australia-southeast1:googlecloudsql
+  cloud_sql_instances: lexical-archery-231806:australia-southeast1:googlecloudsql
