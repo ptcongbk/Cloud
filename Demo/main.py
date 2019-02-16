@@ -8,24 +8,24 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import random
 import io
 import base64
-import numpy
 
 
 app = Flask(__name__)
 
 ### TO EDIT ###
 sql_host = '35.197.176.134' 
+sql_connection_name='lexical-archery-231806:australia-southeast1:googlecloudsql'
 sql_port = 3306
 sql_database = 'currencies'
 sql_user = 'root'
-sql_password = 'griffith_cloud_learning'
+sql_password = 'congphan'
 ### END TO EDIT ###
 
 ### SHARED SQL FUNCTIONS ###
 def sqlConnect():
     global db
     global cursor
-    db = pymysql.connect(host=sql_host, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
+    db = pymysql.connect(unix_socket='/cloudsql/' +sql_connection_name, port=sql_port, database=sql_database, user=sql_user, password=sql_password) 
     cursor = db.cursor()
     return db
 def sqlClose():
