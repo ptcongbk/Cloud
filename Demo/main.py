@@ -13,11 +13,11 @@ import base64
 app = Flask(__name__)
 
 ### TO EDIT ###
-sql_host = '35.226.205.65' 
+sql_host = '35.197.176.134' 
 sql_port = 3306
 sql_database = 'currencies'
 sql_user = 'root'
-sql_password = 'congphan'
+sql_password = 'griffith_cloud_learning'
 ### END TO EDIT ###
 
 ### SHARED SQL FUNCTIONS ###
